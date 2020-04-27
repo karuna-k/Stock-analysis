@@ -63,6 +63,18 @@ def processfunction(checkedlist):
         dic[i] = {'CompanyName': soup.find(
             "h1").text, 'StockValue': float(s.text)}
         i = i+1
+    if 'stock14' in checkedlist:
+        tag = "https://in.finance.yahoo.com/"
+        URL.append(tag)
+        response = requests.get(tag, timeout=240)
+        soup = BeautifulSoup(response.content, "html.parser")
+        e = soup.find('div', attrs={'id': 'market-summary'})
+        s = e.find("li")
+        f = s.find("span")
+        print(float(f.get_text().replace(',', '')))
+        print(soup.find("b").text)
+        dic[i] = {'CompanyName': soup.find(
+            "b").text, 'StockValue': float(f.get_text().replace(',', ''))}
     print('number of companies', len(URL))
     for j in dic.values():
         print(j)
